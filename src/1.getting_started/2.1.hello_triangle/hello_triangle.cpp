@@ -3,19 +3,40 @@
 
 #include <iostream>
 
+char *myFormatStringByFun(char *format, ...)
+{
+    va_list list;
+    //1. 先获取格式化后字符串的长度
+    va_start(list, format);
+    int size = vsnprintf(NULL, 0, format, list);
+    va_end(list);
+    if(size <= 0) {
+        return NULL;
+    }
+    size++;
+    
+    //2. 复位va_list，将格式化字符串写入到buf
+    va_start(list, format);
+    char *buf = (char *)malloc(size);
+    vsnprintf(buf, size, format, list);
+    va_end(list);
+    return buf;
+}
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+const int g_location = 0;
 
-const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
+const char *vertexShaderSource = myFormatStringByFun((char *)"#version 330 core\n"
+    "layout (location = %d) in vec3 aPos;\n"
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
+    "}\0",g_location);
 const char *fragmentShaderSource = "#version 330 core\n"
     "out vec4 FragColor;\n"
     "void main()\n"
@@ -114,8 +135,8 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(g_location, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(g_location);
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
@@ -145,6 +166,9 @@ int main()
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         glDrawArrays(GL_TRIANGLES, 0, 3);
+        //可以试下画点和线
+//        glDrawArrays(GL_POINTS, 0, 3);
+//        glDrawArrays(GL_LINE_STRIP, 0, 3);
         // glBindVertexArray(0); // no need to unbind it every time 
  
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
