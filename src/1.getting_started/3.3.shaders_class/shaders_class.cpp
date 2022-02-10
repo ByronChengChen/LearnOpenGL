@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <cmath>
 
 #include <learnopengl/shader_s.h>
 
@@ -55,7 +56,7 @@ int main()
         // positions         // colors
          0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
         -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top
     };
 
     unsigned int VBO, VAO;
@@ -95,6 +96,16 @@ int main()
         // render the triangle
         ourShader.use();
         glBindVertexArray(VAO);
+        
+        // update shader uniform
+        float timeValue = glfwGetTime();
+        float right = sin(timeValue) / 2.0f + 0.5f;
+        int vertexPositionLocation = glGetUniformLocation(ourShader.ID, "uRight");
+        //注意，不存在ver1，这里使用float就行
+        glUniform1f(vertexPositionLocation, right);
+//        glUniform2f(vertexPositionLocation, right,0);
+//        glUniform4f(vertexPositionLocation, right, 0.f, 0.0f, 1.0f);
+        
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
