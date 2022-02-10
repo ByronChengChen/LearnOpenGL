@@ -165,6 +165,7 @@ int main()
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         glDrawArrays(GL_TRIANGLES, 0, 3);
+        
         //可以试下画点和线
 //        glDrawArrays(GL_POINTS, 0, 3);
 //        glDrawArrays(GL_LINE_STRIP, 0, 3);
