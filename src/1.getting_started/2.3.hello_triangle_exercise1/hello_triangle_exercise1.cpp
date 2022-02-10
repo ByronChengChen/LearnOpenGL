@@ -150,8 +150,10 @@ int main()
         // draw our first triangle
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        glDrawArrays(GL_TRIANGLES, 0, 6); // set the count to 6 since we're drawing 6 vertices now (2 triangles); not 3!
-        // glBindVertexArray(0); // no need to unbind it every time 
+        glDrawArrays(GL_TRIANGLES, 4, 3);//有两个顶点情况，第三个顶点用0 0 作为默认顶点么？
+//        glDrawArrays(GL_TRIANGLES, 2, 3);
+//        glDrawArrays(GL_TRIANGLES, 0, 6); // set the count to 6 since we're drawing 6 vertices now (2 triangles); not 3!
+        // glBindVertexArray(0); // no need to unbind it every time
  
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
