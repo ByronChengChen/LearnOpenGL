@@ -57,6 +57,10 @@ int main()
          0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
         -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
          0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top
+//        如果把颜色设置为负数，则任务颜色不生效。颜色是大于0的。
+//        0.5f, -0.5f, 0.0f,  -0.1, 0.0f, 0.0f,  // bottom right
+//       -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 0.0f,  // bottom left
+//        0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 0.0f   // top
     };
 
     unsigned int VBO, VAO;
