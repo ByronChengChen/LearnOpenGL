@@ -90,6 +90,7 @@ int main()
 
     // load and create a texture 
     // -------------------------
+    //texture1 为箱子，texture2为笑脸
     unsigned int texture1, texture2;
     // texture 1
     // ---------
@@ -106,6 +107,7 @@ int main()
     stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
     unsigned char *data = stbi_load(FileSystem::getPath("resources/textures/container.jpg").c_str(), &width, &height, &nrChannels, 0);
+    //!!!: ck info 纹理使用 1. 加载图片到纹理
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -144,9 +146,18 @@ int main()
     // -------------------------------------------------------------------------------------------
     ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
-    glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
+    
+    ////!!!: ck info 纹理使用 3. 将纹理采集器进行纹理单元编号
+    //samplerTexture1纹理采集器 拿编号为2纹理单元的纹理
+    glUniform1i(glGetUniformLocation(ourShader.ID, "samplerTexture1"), 2);
     // or set it via the texture class
-    ourShader.setInt("texture2", 1);
+    //samplerTexture2纹理采集器 拿编号为1纹理单元的纹理
+    ourShader.setInt("samplerTexture2", 1);
+    //texture1纹理采集器 拿编号为0纹理单元的纹理
+//    glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
+//    // or set it via the texture class
+    //texture2纹理采集器 拿编号为1纹理单元的纹理
+//    ourShader.setInt("texture2", 1);
 
 
 
@@ -163,9 +174,12 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        ////!!!: ck info 纹理使用 4. 激活对应编号的纹理单元并绑定纹理
         // bind textures on corresponding texture units
-        glActiveTexture(GL_TEXTURE0);
+        //激活编号为0的纹理单元并绑定纹理
+        glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, texture1);
+        //激活编号为1的纹理单元并绑定纹理
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
